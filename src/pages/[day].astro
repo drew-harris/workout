@@ -15,8 +15,6 @@ export function getStaticPaths() {
   ];
 }
 
-
-
 const day = Astro.params.day?.toString();
 if (!day || typeof day !== 'string' || day === undefined) {
   Astro.redirect('/');
