@@ -1,0 +1,37 @@
+---
+import Exercise from "../components/Exercise.astro";
+import Layout from "../layouts/Layout.astro";
+import { getWorkoutForDay } from "../workout";
+
+export function getStaticPaths() {
+  return [
+    { params: { day: 'monday' } },
+    { params: { day: 'tuesday' } },
+    { params: { day: 'wednesday' } },
+    { params: { day: 'thursday' } },
+    { params: { day: 'friday' } },
+    { params: { day: 'saturday' } },
+    { params: { day: 'sunday' } },
+  ];
+}
+
+
+
+const day = Astro.params.day?.toString();
+if (!day || typeof day !== 'string' || day === undefined) {
+  Astro.redirect('/');
+}
+
+const capitalized = day ? day.charAt(0).toUpperCase() + day.slice(1) : "None"
+
+const workout: string[] = getWorkoutForDay(day as string);
+---
+
+<Layout title={capitalized + " Workout" }>
+  <div class="font-bold mb-4 text-orange-500 text-3xl">{capitalized}</div>
+  <div class="flex flex-col gap-2">
+    {workout.map((name) => (
+    <Exercise name={name} />
+    ))}
+  </div>
+</Layout>
